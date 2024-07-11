@@ -1,0 +1,25 @@
+name: cmake
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        build_type: ["Debug", "Release"]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Configure
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -Dsaf_ENABLE_TESTING:BOOL=ON
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build
+    - name: Test
+      run: cmake --build ${{github.workspace}}/build --target test -- ARGS="--output-on-failure"
+
