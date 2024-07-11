@@ -8,10 +8,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Debug
-
 jobs:
   build:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
@@ -21,13 +17,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Configure CMake
-      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
+    - name: Configure
+      run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -saf_ENABLE_TESTING=ON
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
+      run: cmake --build ${{github.workspace}}/build
     - name: Test
       run: cmake --build ${{github.workspace}}/build --target test -- ARGS="--output-on-failure"
 
