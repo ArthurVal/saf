@@ -9,9 +9,10 @@ TYPED_TEST_SUITE(TestSafOverflows, saf::AllInts);
 
 TYPED_TEST(TestSafOverflows, Addition) {
   for (auto [lhs, rhs] : std::array{
-           std::array{this->GetMaxValue(), this->Cast(0)},
-           std::array{this->Cast(this->GetMaxValue() - 1), this->Cast(1)},
-           std::array{this->GetMinValue(), this->GetMaxValue()},
+           std::array{TestFixture::GetMaxValue(), TestFixture::Cast(0)},
+           std::array{TestFixture::Cast(TestFixture::GetMaxValue() - 1),
+                      TestFixture::Cast(1)},
+           std::array{TestFixture::GetMinValue(), TestFixture::GetMaxValue()},
        }) {
     EXPECT_PRED2(
         [](auto a, auto b) { return not saf_IsOverflowing(Add, a, b); }, lhs,
@@ -23,8 +24,8 @@ TYPED_TEST(TestSafOverflows, Addition) {
   }
 
   for (auto [lhs, rhs] : std::array{
-           std::array{this->GetMaxValue(), this->Cast(1)},
-           std::array{this->GetMaxValue(), this->GetMaxValue()},
+           std::array{TestFixture::GetMaxValue(), TestFixture::Cast(1)},
+           std::array{TestFixture::GetMaxValue(), TestFixture::GetMaxValue()},
        }) {
     EXPECT_PRED2([](auto a, auto b) { return saf_IsOverflowing(Add, a, b); },
                  lhs, rhs);
@@ -36,20 +37,21 @@ TYPED_TEST(TestSafOverflows, Addition) {
 
 TYPED_TEST(TestSafOverflows, Subsctraction) {
   for (auto [lhs, rhs] : std::array{
-           std::array{this->GetMaxValue(), this->Cast(0)},
-           std::array{this->Cast(this->GetMaxValue() - 1), this->Cast(-1)},
+           std::array{TestFixture::GetMaxValue(), TestFixture::Cast(0)},
+           std::array{TestFixture::Cast(TestFixture::GetMaxValue() - 1),
+                      TestFixture::Cast(-1)},
        }) {
     EXPECT_PRED2(
         [](auto a, auto b) { return not saf_IsOverflowing(Sub, a, b); }, lhs,
         rhs);
   }
 
-  if constexpr (this->IsSigned()) {
+  if constexpr (TestFixture::IsSigned()) {
     // Unsigned substraction can never Overflows
 
     for (auto [lhs, rhs] : std::array{
-             std::array{this->GetMaxValue(), this->Cast(-1)},
-             std::array{this->GetMaxValue(), this->GetMinValue()},
+             std::array{TestFixture::GetMaxValue(), TestFixture::Cast(-1)},
+             std::array{TestFixture::GetMaxValue(), TestFixture::GetMinValue()},
          }) {
       EXPECT_PRED2([](auto a, auto b) { return saf_IsOverflowing(Sub, a, b); },
                    lhs, rhs);
@@ -59,10 +61,11 @@ TYPED_TEST(TestSafOverflows, Subsctraction) {
 
 TYPED_TEST(TestSafOverflows, Multiplication) {
   for (auto [lhs, rhs] : std::array{
-           std::array{this->GetMaxValue(), this->Cast(0)},
-           std::array{this->GetMaxValue(), this->Cast(1)},
-           std::array{this->Cast(this->GetMaxValue() / this->Cast(2)),
-                      this->Cast(2)},
+           std::array{TestFixture::GetMaxValue(), TestFixture::Cast(0)},
+           std::array{TestFixture::GetMaxValue(), TestFixture::Cast(1)},
+           std::array{TestFixture::Cast(TestFixture::GetMaxValue() /
+                                        TestFixture::Cast(2)),
+                      TestFixture::Cast(2)},
        }) {
     EXPECT_PRED2(
         [](auto a, auto b) { return not saf_IsOverflowing(Mul, a, b); }, lhs,
@@ -75,8 +78,8 @@ TYPED_TEST(TestSafOverflows, Multiplication) {
 
   // Only positive values for unsigned case
   for (auto [lhs, rhs] : std::array{
-           std::array{this->GetMaxValue(), this->GetMaxValue()},
-           std::array{this->GetMaxValue(), this->Cast(2)},
+           std::array{TestFixture::GetMaxValue(), TestFixture::GetMaxValue()},
+           std::array{TestFixture::GetMaxValue(), TestFixture::Cast(2)},
        }) {
     EXPECT_PRED2([](auto a, auto b) { return saf_IsOverflowing(Mul, a, b); },
                  lhs, rhs);
@@ -85,10 +88,10 @@ TYPED_TEST(TestSafOverflows, Multiplication) {
                  rhs, lhs);
   }
 
-  if constexpr (this->IsSigned()) {
+  if constexpr (TestFixture::IsSigned()) {
     for (auto [lhs, rhs] : std::array{
-             std::array{this->GetMinValue(), this->GetMinValue()},
-             std::array{this->GetMinValue(), this->Cast(-2)},
+             std::array{TestFixture::GetMinValue(), TestFixture::GetMinValue()},
+             std::array{TestFixture::GetMinValue(), TestFixture::Cast(-2)},
          }) {
       EXPECT_PRED2([](auto a, auto b) { return saf_IsOverflowing(Mul, a, b); },
                    lhs, rhs);
