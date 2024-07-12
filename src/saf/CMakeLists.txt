@@ -15,12 +15,6 @@ target_compile_features(${PROJECT_NAME}
 
 # target_compile_options(${PROJECT_NAME}
 #   PRIVATE
-#   $<$<CXX_COMPILER_ID:MSVC>:
-#   /W4
-#   /w14640
-#   >
-
-#   $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:
 #   -Wall
 #   -Wextra
 #   -Wshadow
@@ -28,7 +22,6 @@ target_compile_features(${PROJECT_NAME}
 #   -Wdouble-promotion
 #   -Wundef
 #   -Wconversion
-#   >
 #   )
 
 set_target_properties(${PROJECT_NAME}
