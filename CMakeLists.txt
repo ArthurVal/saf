@@ -1,6 +1,6 @@
 include(cmake/DisableInSourceBuildDir.cmake)
 
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 
 project(saf
   VERSION 1.0.0

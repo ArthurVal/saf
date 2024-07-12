@@ -20,16 +20,11 @@ target_compile_options(${PROJECT_NAME}-test
   -Wextra
   -Wshadow
   -Wnon-virtual-dtor
-  -Wpedantic
+  -pedantic
   )
 
 target_compile_features(${PROJECT_NAME}-test
   PRIVATE cxx_std_17
   )
 
-
-if(${CMAKE_VERSION} VERSION_LESS "3.10.0")
-  gtest_add_tests(TARGET ${PROJECT_NAME}-test)
-else()
-  gtest_discover_tests(${PROJECT_NAME}-test)
-endif()
+gtest_discover_tests(${PROJECT_NAME}-test)

@@ -17,12 +17,11 @@ target_compile_features(${PROJECT_NAME}
 #   PRIVATE
 #   -Wall
 #   -Wextra
-#   -Wpedantic
 #   -Wshadow
+#   -pedantic
 #   -Wdouble-promotion
 #   -Wundef
 #   -Wconversion
-#   # -Werror
 #   )
 
 set_target_properties(${PROJECT_NAME}
