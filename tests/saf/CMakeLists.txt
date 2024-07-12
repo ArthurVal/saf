@@ -16,18 +16,11 @@ target_link_libraries(${PROJECT_NAME}-test
 
 target_compile_options(${PROJECT_NAME}-test
   PRIVATE
-  $<$<CXX_COMPILER_ID:MSVC>:
-  /W4
-  /w14640
-  >
-
-  $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:
   -Wall
   -Wextra
   -Wshadow
   -Wnon-virtual-dtor
   -pedantic
-  >
   )
 
 target_compile_features(${PROJECT_NAME}-test
